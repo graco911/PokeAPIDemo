@@ -2,7 +2,6 @@ package com.gracodev.data.remote
 
 import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.data.model.pokemondata.PokemonListResponse
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,7 +16,7 @@ interface PokeAPI {
     suspend fun getPokemonList(
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
-    ): Deferred<Response<PokemonListResponse>>
+    ): Response<PokemonListResponse>
 
     /**
      * Define endpoint to get a pokemon data using your Pokemon ID
@@ -25,5 +24,5 @@ interface PokeAPI {
     @GET("pokemon/{id}")
     suspend fun getPokemonById(
         @Path("id") id: String
-    ): Deferred<Response<PokemonInformation>>
+    ): Response<PokemonInformation>
 }

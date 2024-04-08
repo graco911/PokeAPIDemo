@@ -3,14 +3,13 @@ package com.gracodev.data.remote
 import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.data.model.pokemondata.PokemonListResponse
 import com.gracodev.data.usecaseresult.UseCaseResult
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 
 class RetrofitPokeAPI(private val pokeAPI: PokeAPI) : IPokemonAPI {
 
-    private suspend fun <T : Any> executeRequest(apiCall: suspend () -> Deferred<Response<T>>): UseCaseResult<T> {
+    private suspend fun <T : Any> executeRequest(apiCall: suspend () -> Response<T>): UseCaseResult<T> {
         return try {
-            val response = apiCall.invoke().await()
+            val response = apiCall.invoke()
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {

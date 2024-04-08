@@ -6,8 +6,7 @@ import com.gracodev.data.remote.PokeAPIDataSource
 import com.gracodev.data.usecaseresult.UseCaseResult
 
 class PokemonRepository(
-    private val pokeAPIDataSource: PokeAPIDataSource,
-    private val pokemonRoomDataSource: PokemonRoomDataSource,
+    private val pokeAPIDataSource: PokeAPIDataSource
 ) {
     suspend fun fetchPokemonList(offset: Int, limit: Int): UseCaseResult<List<PokemonInformation>> {
 
@@ -30,6 +29,9 @@ class PokemonRepository(
                         }
 
                         is UseCaseResult.Success -> {
+                            pokemonInformation.data.image =
+                                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/" +
+                                        "pokemon/other/official-artwork/${pokemon.getPokemonId()}.png"
                             result.add(pokemonInformation.data)
                         }
                     }
@@ -39,6 +41,7 @@ class PokemonRepository(
         }
     }
 
-    private suspend fun fetchPokemonListOffline(): UseCaseResult<List<PokemonInformation>> =
-        pokemonRoomDataSource.fetchPokemonList()
+    private suspend fun fetchPokemonListOffline(): UseCaseResult<List<PokemonInformation>> {
+        TODO()
+    }
 }
