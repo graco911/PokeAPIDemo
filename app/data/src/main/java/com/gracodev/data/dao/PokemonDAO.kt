@@ -3,15 +3,15 @@ package com.gracodev.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.gracodev.domain.model.pokemondata.PokemonItem
+import com.gracodev.data.model.pokemondata.PokemonInformation
 
 @Dao
 interface PokemonDAO {
     @Insert
-    suspend fun insert(pokemonItem: PokemonItem)
+    suspend fun insert(pokemonItem: PokemonInformation)
 
     @Query("SELECT * FROM pokemon_list")
-    suspend fun getAllPokemons(): List<PokemonItem>
+    suspend fun getAllPokemons(): List<PokemonInformation>
 
     @Query("DELETE FROM pokemon_list")
     suspend fun deleteAll()

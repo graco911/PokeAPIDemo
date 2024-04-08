@@ -1,16 +1,24 @@
 package com.gracodev.data.database
 
-import com.gracodev.data.remote.PokemonAPI
-import com.gracodev.domain.model.pokemondata.PokemonItem
+import com.gracodev.data.model.pokemondata.PokemonInformation
+import com.gracodev.data.usecaseresult.UseCaseResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class PokemonRoomDataSource(
-    private val pokemonAPI: PokemonAPI,
+    private val iPokemonRoom: IPokemonRoom,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend fun fetchPokemonList(): List<PokemonItem> =
+    suspend fun fetchPokemonList(): UseCaseResult<List<PokemonInformation>> =
         withContext(ioDispatcher) {
-            pokemonAPI.fetchPokemonList(0, 0)
+            try {
+                iPokemonRoom.fetchPokemonList()
+            } catch (ex: Exception) {
+                UseCaseResult.Error(ex)
+            }
         }
+}
+
+interface IPokemonRoom {
+    suspend fun fetchPokemonList(): UseCaseResult<List<PokemonInformation>>
 }

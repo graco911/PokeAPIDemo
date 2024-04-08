@@ -1,4 +1,4 @@
-package com.gracodev.domain.model.pokemondata
+package com.gracodev.data.model.pokemondata
 
 data class PokemonListResponse(
     val count: Int,

@@ -1,11 +1,11 @@
 package com.gracodev.data.database
 
 import com.gracodev.data.dao.PokemonDAO
-import com.gracodev.data.remote.PokemonAPI
-import com.gracodev.domain.model.pokemondata.PokemonItem
+import com.gracodev.data.model.pokemondata.PokemonInformation
+import com.gracodev.data.usecaseresult.UseCaseResult
 
-class PokemonRoomDatabase(private val pokemonDAO: PokemonDAO) : PokemonAPI {
-    override suspend fun fetchPokemonList(offset: Int, limit: Int): List<PokemonItem> {
-        return pokemonDAO.getAllPokemons()
+class PokemonRoomDatabase(private val pokemonDAO: PokemonDAO) : IPokemonRoom {
+    override suspend fun fetchPokemonList(): UseCaseResult<List<PokemonInformation>> {
+        return UseCaseResult.Success(pokemonDAO.getAllPokemons())
     }
 }
