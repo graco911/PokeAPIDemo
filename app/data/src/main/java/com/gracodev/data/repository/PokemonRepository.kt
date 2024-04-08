@@ -2,6 +2,7 @@ package com.gracodev.data.repository
 
 import com.gracodev.data.database.PokemonRoomDataSource
 import com.gracodev.data.model.pokemondata.PokemonInformation
+import com.gracodev.data.model.pokemondata.Types
 import com.gracodev.data.remote.PokeAPIDataSource
 import com.gracodev.data.usecaseresult.UseCaseResult
 
@@ -23,7 +24,8 @@ class PokemonRepository(
                         is UseCaseResult.Error -> {
                             result.add(
                                 PokemonInformation(
-                                    0, 0, "", 0, "", 0
+                                    0, 0, "", 0, "", 0,
+                                    arrayListOf()
                                 )
                             )
                         }
