@@ -1,4 +1,4 @@
-package com.gracodev.presentation.layouts
+package com.gracodev.pokeapidemo.layouts
 
 import android.app.Dialog
 import android.graphics.Color
@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.gracodev.presentation.R
+import com.gracodev.pokeapidemo.R
 
 class LoadingScreen : DialogFragment() {
 

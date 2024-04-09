@@ -1,4 +1,4 @@
-package com.gracodev.presentation.viewmodel
+package com.gracodev.pokeapidemo.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -10,14 +10,13 @@ import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.data.usecaseresult.UseCaseResult
 import com.gracodev.domain.usecase.FetchPokemonListUseCase
 import com.gracodev.domain.usecase.FetchPokemonPagingListUseCase
-import com.gracodev.presentation.states.UIStates
+import com.gracodev.pokeapidemo.states.UIStates
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 

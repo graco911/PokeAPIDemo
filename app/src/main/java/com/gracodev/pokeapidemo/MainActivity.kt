@@ -3,12 +3,7 @@ package com.gracodev.pokeapidemo
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.gracodev.presentation.states.UIStates
-import com.gracodev.presentation.viewmodel.PokemonListViewModel
-import kotlinx.coroutines.launch
+import com.gracodev.pokeapidemo.viewmodel.PokemonListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -18,31 +13,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is UIStates.Error -> {
-
-                        }
-
-                        UIStates.Init -> {
-
-                        }
-
-                        UIStates.Loading -> {
-
-                        }
-
-                        is UIStates.Success -> {
-
-                        }
-                    }
-                }
-            }
-        }
-
-        viewModel.fetchPokemonData()
     }
 }

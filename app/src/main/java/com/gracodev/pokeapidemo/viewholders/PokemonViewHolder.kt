@@ -1,4 +1,4 @@
-package com.gracodev.presentation.viewholders
+package com.gracodev.pokeapidemo.viewholders
 
 import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
@@ -6,9 +6,9 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gracodev.data.model.pokemondata.PokemonInformation
-import com.gracodev.presentation.R
-import com.gracodev.presentation.databinding.PokemonItemBinding
-import com.gracodev.presentation.utils.PokemonTypeUtils
+import com.gracodev.pokeapidemo.R
+import com.gracodev.pokeapidemo.databinding.PokemonItemBinding
+import com.gracodev.pokeapidemo.utils.PokemonTypeUtils
 
 class PokemonViewHolder(private val binding: PokemonItemBinding) :
     RecyclerView.ViewHolder(binding.root) {

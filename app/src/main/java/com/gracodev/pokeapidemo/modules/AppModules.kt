@@ -1,4 +1,4 @@
-package com.gracodev.presentation.modules
+package com.gracodev.pokeapidemo.modules
 
 import android.content.Context
 import androidx.room.Room
@@ -15,8 +15,8 @@ import com.gracodev.data.repository.PokemonPagingRepository
 import com.gracodev.data.repository.PokemonRepository
 import com.gracodev.domain.usecase.FetchPokemonListUseCase
 import com.gracodev.domain.usecase.FetchPokemonPagingListUseCase
-import com.gracodev.presentation.factories.PokemonViewModelFactory
-import com.gracodev.presentation.viewmodel.PokemonListViewModel
+import com.gracodev.pokeapidemo.factories.PokemonViewModelFactory
+import com.gracodev.pokeapidemo.viewmodel.PokemonListViewModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient

@@ -1,7 +1,6 @@
-package com.gracodev.presentation.utils
+package com.gracodev.pokeapidemo.utils
 
-import com.gracodev.presentation.R
-
+import com.gracodev.pokeapidemo.R
 object PokemonTypeUtils {
 
     fun getTypeColor(type: String): Int {

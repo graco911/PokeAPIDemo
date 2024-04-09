@@ -1,11 +1,11 @@
-package com.gracodev.presentation.adapters
+package com.gracodev.pokeapidemo.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gracodev.data.model.pokemondata.PokemonInformation
-import com.gracodev.presentation.databinding.PokemonItemBinding
-import com.gracodev.presentation.viewholders.PokemonViewHolder
+import com.gracodev.pokeapidemo.databinding.PokemonItemBinding
+import com.gracodev.pokeapidemo.viewholders.PokemonViewHolder
 
 class PokemonListAdapter(
     private val pokemonList: MutableList<PokemonInformation> = mutableListOf(),

@@ -1,10 +1,10 @@
-package com.gracodev.presentation.factories
+package com.gracodev.pokeapidemo.factories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.gracodev.domain.usecase.FetchPokemonListUseCase
 import com.gracodev.domain.usecase.FetchPokemonPagingListUseCase
-import com.gracodev.presentation.viewmodel.PokemonListViewModel
+import com.gracodev.pokeapidemo.viewmodel.PokemonListViewModel
 
 class PokemonViewModelFactory(
     private val fetchPokemonListUseCase: FetchPokemonListUseCase,

@@ -5,7 +5,7 @@
     android:id="@+id/backgroundRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.PokemonDetailFragment">
+    tools:context="com.gracodev.pokeapidemo.fragments.PokemonDetailFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -95,19 +95,19 @@
             app:layout_constraintTop_toBottomOf="@+id/cardViewBackground">
 
             <include
-                android:id="@+id/pokemonIdContainer"
+                android:id="@+id/pokemonIdContainer1"
                 layout="@layout/item_container_layout" />
 
             <include
-                android:id="@+id/pokemonIdContainer"
+                android:id="@+id/pokemonIdContainer2"
                 layout="@layout/item_container_layout" />
 
             <include
-                android:id="@+id/pokemonIdContainer"
+                android:id="@+id/pokemonIdContainer3"
                 layout="@layout/item_container_layout" />
 
             <include
-                android:id="@+id/pokemonIdContainer"
+                android:id="@+id/pokemonIdContainer4"
                 layout="@layout/item_container_layout" />
 
         </LinearLayout>

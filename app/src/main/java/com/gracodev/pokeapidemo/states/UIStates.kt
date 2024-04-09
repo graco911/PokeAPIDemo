@@ -1,4 +1,4 @@
-package com.gracodev.presentation.states
+package com.gracodev.pokeapidemo.states
 
 sealed class UIStates<out T : Any> {
     object Init : UIStates<Nothing>()
