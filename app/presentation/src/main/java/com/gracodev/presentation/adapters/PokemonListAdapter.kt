@@ -1,12 +1,16 @@
 package com.gracodev.presentation.adapters
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.presentation.R
 import com.gracodev.presentation.databinding.PokemonItemBinding
+import com.gracodev.presentation.utils.PokemonTypeUtils
 
 class PokemonListAdapter(
     private val pokemonList: MutableList<PokemonInformation> = mutableListOf(),
@@ -45,6 +49,19 @@ class PokemonListAdapter(
                     .centerCrop()
                     .placeholder(R.drawable.pokeball)
                     .into(pokemonImageView);
+
+
+                ViewCompat
+                    .setBackgroundTintList(
+                        backgroundCircleLayout, ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                PokemonTypeUtils.getTypeColor(
+                                    pokemon.types.first().type?.name ?: ""
+                                )
+                            )
+                        )
+                    )
             }
             binding.root.setOnClickListener { onItemClick(pokemon) }
         }
