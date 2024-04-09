@@ -10,9 +10,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.presentation.adapters.PokemonListAdapter
+import com.gracodev.presentation.adapters.PokemonPagingAdapter
 import com.gracodev.presentation.databinding.FragmentPokemonListBinding
 import com.gracodev.presentation.states.UIStates
 import com.gracodev.presentation.viewmodel.PokemonListViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -36,6 +38,12 @@ class PokemonListFragment : BaseFragment() {
         }
     }
 
+    private val pokemonListPagingAdapter: PokemonPagingAdapter by lazy {
+        PokemonPagingAdapter() {
+            handleTap(it)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ) = binding.root
@@ -45,12 +53,13 @@ class PokemonListFragment : BaseFragment() {
         setUpRecyclerView()
         setUpObservableUIState()
         setUpSwipeRefreshLayout()
+        viewModel.fetchPokemonPagingData()
     }
 
     private fun setUpObservableUIState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect() { uiState ->
+                viewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is UIStates.Error -> {
                         }
@@ -71,17 +80,41 @@ class PokemonListFragment : BaseFragment() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.pagingData.collectLatest { pagingData ->
+                    dismissDialog()
+                    swipeRefreshLayout.isRefreshing = false
+                    lifecycleScope.launch {
+                        pokemonListPagingAdapter.submitData(pagingData)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.loadingState.collect() { loading ->
+                    if (loading) {
+                        showDialog(TAG)
+                    } else {
+                        dismissDialog()
+                    }
+                }
+            }
+        }
     }
 
     private fun setUpSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.fetchPokemonData()
+            viewModel.fetchPokemonPagingData()
         }
     }
 
     private fun setUpRecyclerView() {
         binding.apply {
-            recylerViewPokemonsList.adapter = pokemonListAdapter
+            recylerViewPokemonsList.adapter = pokemonListPagingAdapter
         }
     }
 

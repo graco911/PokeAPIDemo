@@ -11,8 +11,10 @@ import com.gracodev.data.remote.IPokemonAPI
 import com.gracodev.data.remote.PokeAPI
 import com.gracodev.data.remote.PokeAPIDataSource
 import com.gracodev.data.remote.RetrofitPokeAPI
+import com.gracodev.data.repository.PokemonPagingRepository
 import com.gracodev.data.repository.PokemonRepository
 import com.gracodev.domain.usecase.FetchPokemonListUseCase
+import com.gracodev.domain.usecase.FetchPokemonPagingListUseCase
 import com.gracodev.presentation.factories.PokemonViewModelFactory
 import com.gracodev.presentation.viewmodel.PokemonListViewModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -57,11 +59,13 @@ fun createAppModules(): Module = module {
     single { PokeAPIDataSource(get(), get()) }
     single { PokemonRoomDataSource(get(), get()) }
     single { PokemonRepository(get()) }
+    single { PokemonPagingRepository(get()) }
     single { FetchPokemonListUseCase(get(), get()) }
+    single { FetchPokemonPagingListUseCase(get(), get()) }
 
-    factory { PokemonViewModelFactory(get()) }
+    factory { PokemonViewModelFactory(get(), get()) }
 
-    viewModel { PokemonListViewModel(get()) }
+    viewModel { PokemonListViewModel(get(), get()) }
 }
 
 fun createHttpClient(context: Context): OkHttpClient {

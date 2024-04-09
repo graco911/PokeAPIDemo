@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":app:data"))
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.paging.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -58,4 +59,5 @@ dependencies {
     implementation ("com.squareup.retrofit2:adapter-rxjava2:2.5.0")
     implementation ("com.airbnb.android:lottie:5.2.0")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.androidx.paging.common.ktx)
 }
