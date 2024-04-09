@@ -30,6 +30,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+
 }
 
 dependencies {
@@ -40,6 +45,7 @@ dependencies {
     implementation(project(":app:domain"))
     implementation(project(":app:data"))
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.swiperefreshlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -50,4 +56,6 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation ("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
     implementation ("com.squareup.retrofit2:adapter-rxjava2:2.5.0")
+    implementation ("com.airbnb.android:lottie:5.2.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 }
