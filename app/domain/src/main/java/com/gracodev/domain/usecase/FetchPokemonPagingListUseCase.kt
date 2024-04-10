@@ -9,7 +9,7 @@ class FetchPokemonPagingListUseCase(
     private val pokemonPagingRepository: PokemonPagingRepository,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend operator fun invoke(offset: Int, limit: Int) = withContext(defaultDispatcher) {
+    suspend operator fun invoke() = withContext(defaultDispatcher) {
         pokemonPagingRepository.getPokemonPagingSource()
     }
 }

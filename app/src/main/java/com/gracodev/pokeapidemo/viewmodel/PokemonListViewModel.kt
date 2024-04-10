@@ -60,7 +60,7 @@ class PokemonListViewModel(
         viewModelScope.launch {
             try {
                 _loadingState.value = true
-                val result = fetchPokemonPagingListUseCase(0, 25)
+                val result = fetchPokemonPagingListUseCase()
                 if (result is UseCaseResult.Success) {
                     _pagingSource.value = result.data
                     _loadingState.value = false

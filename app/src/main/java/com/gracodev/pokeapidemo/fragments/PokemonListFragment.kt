@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.pokeapidemo.R
@@ -71,11 +70,9 @@ class PokemonListFragment : BaseFragment() {
                         }
 
                         UIStates.Loading -> {
-                            showDialog(TAG)
                         }
 
                         is UIStates.Success -> {
-                            dismissDialog()
                             swipeRefreshLayout.isRefreshing = false
                             uiState.value?.let { pokemonListAdapter.submitAll(it.toMutableList()) }
                         }
@@ -99,9 +96,7 @@ class PokemonListFragment : BaseFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.loadingState.collect() { loading ->
                     if (loading) {
-                        showDialog(TAG)
                     } else {
-                        dismissDialog()
                     }
                 }
             }
@@ -121,20 +116,13 @@ class PokemonListFragment : BaseFragment() {
     }
 
     private fun handleTap(pokemonTapped: PokemonInformation) {
-        // Obtener el FragmentManager
-        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+        val bundle = Bundle().apply {
+            putParcelable("POKEMON_DATA", pokemonTapped)
+        }
 
-        // Iniciar una transacción
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-
-        // Reemplazar el contenido actual por FragmentoB
-        val fragmentoB = PokemonDetailFragment()
-        fragmentTransaction.replace(R.id.fragment_container, fragmentoB)
-
-        // Opcional: agregar la transacción a la pila para permitir retroceder
-        fragmentTransaction.addToBackStack(null)
-
-        // Realizar la transacción
-        fragmentTransaction.commit()
+        findNavController().navigate(
+            R.id.action_pokemonListFragment_to_pokemonDetailFragment,
+            bundle
+        )
     }
 }
