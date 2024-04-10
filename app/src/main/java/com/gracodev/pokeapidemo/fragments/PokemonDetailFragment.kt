@@ -13,6 +13,7 @@ import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.pokeapidemo.R
 import com.gracodev.pokeapidemo.databinding.FragmentPokemonDetailBinding
 import com.gracodev.pokeapidemo.databinding.ItemContainerLayoutBinding
+import com.gracodev.pokeapidemo.utils.Helpers.Companion.capitalizeFirstLetter
 import com.gracodev.pokeapidemo.utils.PokemonTypeUtils
 
 class PokemonDetailFragment : BaseFragment() {
@@ -37,15 +38,13 @@ class PokemonDetailFragment : BaseFragment() {
 
     private fun setPokemonData() {
         binding.apply {
-            pokemonName.text = pokemon.name
+            pokemonName.text = pokemon.name.capitalizeFirstLetter()
             setDataContainer(pokemonIdContainer1, "Weight", pokemon.weight.toString())
             setDataContainer(pokemonIdContainer2, "Height", pokemon.height.toString())
-            pokemon.types.first().type?.name.let {
-                setDataContainer(
-                    pokemonIdContainer3, "Type",
-                    it ?: ""
-                )
-            }
+            setDataContainer(
+                pokemonIdContainer3, "Type",
+                pokemon.type
+            )
             setDataContainer(pokemonIdContainer4, "ID", pokemon.id.toString())
             Glide
                 .with(requireContext())
@@ -56,7 +55,7 @@ class PokemonDetailFragment : BaseFragment() {
 
             val color = ContextCompat.getColor(
                 requireContext(),
-                PokemonTypeUtils.getTypeColor(pokemon.types.first().type?.name ?: "")
+                PokemonTypeUtils.getTypeColor(pokemon.type)
             )
 
             val drawable = DrawableCompat.wrap(backgroundCardType.drawable).mutate()
@@ -70,7 +69,7 @@ class PokemonDetailFragment : BaseFragment() {
                         ContextCompat.getColor(
                             requireContext(),
                             PokemonTypeUtils.getTypeColor(
-                                pokemon.types.first().type?.name ?: ""
+                                pokemon.type
                             )
                         )
                     )

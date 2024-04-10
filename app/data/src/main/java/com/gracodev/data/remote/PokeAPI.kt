@@ -1,6 +1,7 @@
 package com.gracodev.data.remote
 
 import com.gracodev.data.model.pokemondata.PokemonInformation
+import com.gracodev.data.model.pokemondata.PokemonInformationResponse
 import com.gracodev.data.model.pokemondata.PokemonListResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -24,5 +25,5 @@ interface PokeAPI {
     @GET("pokemon/{id}")
     suspend fun getPokemonById(
         @Path("id") id: String
-    ): Response<PokemonInformation>
+    ): Response<PokemonInformationResponse>
 }

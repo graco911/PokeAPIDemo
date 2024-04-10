@@ -1,6 +1,7 @@
 package com.gracodev.data.remote
 
 import com.gracodev.data.model.pokemondata.PokemonInformation
+import com.gracodev.data.model.pokemondata.PokemonInformationResponse
 import com.gracodev.data.model.pokemondata.PokemonListResponse
 import com.gracodev.data.usecaseresult.UseCaseResult
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,7 +16,7 @@ class PokeAPIDataSource(
             iPokemonAPI.fetchPokemonList(offset, limit)
         }
 
-    suspend fun getPokemonById(id: String): UseCaseResult<PokemonInformation> =
+    suspend fun getPokemonById(id: String): UseCaseResult<PokemonInformationResponse> =
         withContext(ioDispatcher) {
             iPokemonAPI.getPokemonById(id)
         }
@@ -23,5 +24,5 @@ class PokeAPIDataSource(
 
 interface IPokemonAPI {
     suspend fun fetchPokemonList(offset: Int, limit: Int): UseCaseResult<PokemonListResponse>
-    suspend fun getPokemonById(id: String): UseCaseResult<PokemonInformation>
+    suspend fun getPokemonById(id: String): UseCaseResult<PokemonInformationResponse>
 }

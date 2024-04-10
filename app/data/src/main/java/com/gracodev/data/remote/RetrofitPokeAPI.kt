@@ -1,6 +1,7 @@
 package com.gracodev.data.remote
 
 import com.gracodev.data.model.pokemondata.PokemonInformation
+import com.gracodev.data.model.pokemondata.PokemonInformationResponse
 import com.gracodev.data.model.pokemondata.PokemonListResponse
 import com.gracodev.data.usecaseresult.UseCaseResult
 import retrofit2.Response
@@ -32,7 +33,7 @@ class RetrofitPokeAPI(private val pokeAPI: PokeAPI) : IPokemonAPI {
         return executeRequest { pokeAPI.getPokemonList(offset, limit) }
     }
 
-    override suspend fun getPokemonById(id: String): UseCaseResult<PokemonInformation> {
+    override suspend fun getPokemonById(id: String): UseCaseResult<PokemonInformationResponse> {
         return executeRequest { pokeAPI.getPokemonById(id) }
     }
 }

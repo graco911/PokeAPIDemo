@@ -11,6 +11,7 @@ import com.gracodev.data.remote.IPokemonAPI
 import com.gracodev.data.remote.PokeAPI
 import com.gracodev.data.remote.PokeAPIDataSource
 import com.gracodev.data.remote.RetrofitPokeAPI
+import com.gracodev.data.repository.PokemonPagingMediatorRepository
 import com.gracodev.data.repository.PokemonPagingRepository
 import com.gracodev.data.repository.PokemonRepository
 import com.gracodev.domain.usecase.FetchPokemonListUseCase
@@ -28,6 +29,7 @@ import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import okhttp3.logging.HttpLoggingInterceptor
 
 fun createAppModules(): Module = module {
 
@@ -58,8 +60,9 @@ fun createAppModules(): Module = module {
     single<IPokemonRoom> { PokemonRoomDatabase(get()) }
     single { PokeAPIDataSource(get(), get()) }
     single { PokemonRoomDataSource(get(), get()) }
-    single { PokemonRepository(get()) }
-    single { PokemonPagingRepository(get()) }
+    single { PokemonRepository(get(), get()) }
+    single { PokemonPagingRepository(get(), get()) }
+    single { PokemonPagingMediatorRepository(get()) }
     single { FetchPokemonListUseCase(get(), get()) }
     single { FetchPokemonPagingListUseCase(get(), get()) }
 
@@ -69,13 +72,16 @@ fun createAppModules(): Module = module {
 }
 
 fun createHttpClient(context: Context): OkHttpClient {
+    val interceptor = HttpLoggingInterceptor()
+    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
     return OkHttpClient.Builder()
         .readTimeout(5, TimeUnit.MINUTES)
         .retryOnConnectionFailure(true)
+        .addInterceptor(interceptor)
         .addInterceptor { chain ->
             val original = chain.request()
             val request = original.newBuilder()
-                .method(original.method(), original.body())
+                .method(original.method, original.body)
                 .build()
             chain.proceed(request)
         }

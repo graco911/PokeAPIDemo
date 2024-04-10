@@ -2,12 +2,14 @@ package com.gracodev.data.repository
 
 import com.gracodev.data.database.PokemonRoomDataSource
 import com.gracodev.data.model.pokemondata.PokemonInformation
+import com.gracodev.data.model.pokemondata.PokemonInformationResponse
 import com.gracodev.data.model.pokemondata.Types
 import com.gracodev.data.remote.PokeAPIDataSource
 import com.gracodev.data.usecaseresult.UseCaseResult
 
 class PokemonRepository(
-    private val pokeAPIDataSource: PokeAPIDataSource
+    private val pokeAPIDataSource: PokeAPIDataSource,
+    private val pokemonRoomDataSource: PokemonRoomDataSource
 ) {
     suspend fun fetchPokemonList(offset: Int, limit: Int): UseCaseResult<List<PokemonInformation>> {
 
@@ -24,17 +26,14 @@ class PokemonRepository(
                         is UseCaseResult.Error -> {
                             result.add(
                                 PokemonInformation(
-                                    0, 0, "", 0, "", 0,
-                                    arrayListOf()
+                                    0, 0, 0, "", 0, "",
+                                    0, ""
                                 )
                             )
                         }
 
                         is UseCaseResult.Success -> {
-                            pokemonInformation.data.image =
-                                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/" +
-                                        "pokemon/other/official-artwork/${pokemon.getPokemonId()}.png"
-                            result.add(pokemonInformation.data)
+                            result.add(PokemonMapper.mapToPokemon(pokemonInformation.data))
                         }
                     }
                 }
@@ -45,5 +44,20 @@ class PokemonRepository(
 
     private suspend fun fetchPokemonListOffline(): UseCaseResult<List<PokemonInformation>> {
         TODO()
+    }
+
+    object PokemonMapper {
+        fun mapToPokemon(response: PokemonInformationResponse): PokemonInformation {
+            return PokemonInformation(
+                dbId = 0,
+                height = response.height,
+                id = response.id,
+                name = response.name,
+                order = response.order,
+                image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${response.id}.png",
+                type = response.types.first().type?.name!! ?: "",
+                weight = response.weight
+            )
+        }
     }
 }

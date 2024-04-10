@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import com.gracodev.data.model.pokemondata.PokemonInformation
-import com.gracodev.data.usecaseresult.UseCaseResult
 import com.gracodev.domain.usecase.FetchPokemonListUseCase
 import com.gracodev.domain.usecase.FetchPokemonPagingListUseCase
 import com.gracodev.pokeapidemo.states.UIStates
@@ -38,7 +37,7 @@ class PokemonListViewModel(
                 Pager(config = PagingConfig(pageSize = 25)) {
                     it
                 }.flow.cachedIn(viewModelScope)
-            } ?: flow { emit(PagingData.empty<PokemonInformation>()) }
+            } ?: flow { emit(PagingData.empty()) }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
 
 
@@ -58,16 +57,9 @@ class PokemonListViewModel(
 
     fun fetchPokemonPagingData() {
         viewModelScope.launch {
-            try {
-                _loadingState.value = true
-                val result = fetchPokemonPagingListUseCase()
-                if (result is UseCaseResult.Success) {
-                    _pagingSource.value = result.data
-                    _loadingState.value = false
-                } else if (result is UseCaseResult.Error) {
-                }
-            } catch (ex: Exception) {
-            }
+            _loadingState.value = true
+            _pagingSource.value = fetchPokemonPagingListUseCase()
+            _loadingState.value = false
         }
     }
 }

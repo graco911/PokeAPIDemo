@@ -10,13 +10,14 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "pokemon_list")
 data class PokemonInformation(
     @PrimaryKey(autoGenerate = true)
-    val height: Int,
+    val dbId: Long,
     val id: Int,
+    val height: Int,
     val name: String,
     val order: Int,
     var image: String,
     val weight: Int,
-    var types: ArrayList<Types>
+    var type: String
 ) : Parcelable
 
 @Parcelize
@@ -34,3 +35,12 @@ data class Type(
     @SerializedName("url") var url: String? = null
 
 ) : Parcelable
+
+data class PokemonInformationResponse(
+    val height: Int,
+    val id: Int,
+    val name: String,
+    val order: Int,
+    val weight: Int,
+    var types: ArrayList<Types>
+)

@@ -28,7 +28,7 @@ class PokemonViewHolder(private val binding: PokemonItemBinding) :
                         ContextCompat.getColor(
                             binding.root.context,
                             PokemonTypeUtils.getTypeColor(
-                                pokemon.types.first().type?.name ?: ""
+                                pokemon.type
                             )
                         )
                     )

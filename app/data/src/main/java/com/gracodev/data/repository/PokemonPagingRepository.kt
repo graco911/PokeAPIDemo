@@ -1,16 +1,23 @@
 package com.gracodev.data.repository
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.gracodev.data.dao.PokemonDAO
 import com.gracodev.data.model.pokemondata.PokemonInformation
 import com.gracodev.data.remote.PokeAPIDataSource
 import com.gracodev.data.usecaseresult.UseCaseResult
 
 class PokemonPagingRepository(
-    private val pokeAPIDataSource: PokeAPIDataSource
+    private val pokeAPIDataSource: PokeAPIDataSource,
+    private val pokemonRoomDataSource: PokemonDAO
 ) {
-    fun getPokemonPagingSource(): UseCaseResult<PagingSource<Int, PokemonInformation>> {
-        return UseCaseResult.Success(object : PagingSource<Int, PokemonInformation>() {
+    suspend fun getPokemonPagingFromRoom(): PagingSource<Int, PokemonInformation> {
+        return pokemonRoomDataSource.getPagingPokemons()
+    }
+
+    suspend fun getPokemonPagingSourceFromAPI(): PagingSource<Int, PokemonInformation> {
+        return object : PagingSource<Int, PokemonInformation>() {
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonInformation> {
                 val offset = params.key ?: 0
                 val limit = params.loadSize
@@ -19,22 +26,34 @@ class PokemonPagingRepository(
                     if (response is UseCaseResult.Success) {
                         val pokemonList: MutableList<PokemonInformation> = mutableListOf()
                         for (pokemon in response.data.results) {
-                            when (val pokemonInformation = pokeAPIDataSource.getPokemonById(pokemon.getPokemonId())) {
+                            when (val pokemonInformation =
+                                pokeAPIDataSource.getPokemonById(pokemon.getPokemonId())) {
                                 is UseCaseResult.Error -> {
                                     pokemonList.add(
                                         PokemonInformation(
-                                            0, 0, "", 0, "", 0,
-                                            arrayListOf()
+                                            0, 0, 0, "", 0, "",
+                                            0, ""
                                         )
                                     )
                                 }
+
                                 is UseCaseResult.Success -> {
-                                    pokemonInformation.data.image =
-                                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.getPokemonId()}.png"
-                                    pokemonList.add(pokemonInformation.data)
+                                    pokemonList.add(
+                                        PokemonRepository.PokemonMapper.mapToPokemon(
+                                            pokemonInformation.data
+                                        )
+                                    )
                                 }
                             }
                         }
+
+                        pokemonRoomDataSource.deleteAll()
+
+                        for (pokemon in pokemonList) {
+                            val pokemonInserted = pokemonRoomDataSource.insert(pokemon)
+                            Log.d("Room", "Pokemon inserted with ID: $pokemonInserted")
+                        }
+
                         LoadResult.Page(
                             data = pokemonList,
                             prevKey = if (offset == 0) null else offset - limit,
@@ -49,13 +68,8 @@ class PokemonPagingRepository(
             }
 
             override fun getRefreshKey(state: PagingState<Int, PokemonInformation>): Int? {
-                // Placeholder implementation for refreshing
                 return null
             }
-        })
-    }
-
-    private suspend fun fetchPokemonListOffline(): PagingSource.LoadResult<Int, PokemonInformation> {
-        TODO()
+        }
     }
 }
